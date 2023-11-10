@@ -143,5 +143,6 @@ std::unique_ptr<Screen> Clock::WatchFaceCustom() {
                                                      notificationManager,
                                                      settingsController,
                                                      heartRateController,
-                                                     motionController);
+                                                     motionController,
+                                                     weatherService);
 }
