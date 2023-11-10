@@ -51,27 +51,18 @@ WatchFaceCustom::WatchFaceCustom(Controllers::DateTime& dateTimeController,
   lv_label_set_text_static(label_time_ampm, "");
   lv_obj_align(label_time_ampm, lv_scr_act(), LV_ALIGN_IN_RIGHT_MID, -30, -55);
 
-  // creating a weather symbol
+  // weather symbol
   weatherIcon = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFF00));
   lv_label_set_text_static(weatherIcon, Symbols::sun);
   lv_obj_align(weatherIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
+  lv_obj_set_style_local_text_font(weatherIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, &fontawesome_weathericons);
 
+  // temperature value
   tempValue = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(tempValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xFFFF00));
   lv_label_set_text_static(tempValue, "72");
   lv_obj_align(tempValue, weatherIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
-
-
-  // heartbeatIcon = lv_label_create(lv_scr_act(), nullptr);
-  // lv_label_set_text_static(heartbeatIcon, Symbols::heartBeat);
-  // lv_obj_set_style_local_text_color(heartbeatIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xCE1B1B));
-  // lv_obj_align(heartbeatIcon, lv_scr_act(), LV_ALIGN_IN_BOTTOM_LEFT, 0, 0);
-
-  // heartbeatValue = lv_label_create(lv_scr_act(), nullptr);
-  // lv_obj_set_style_local_text_color(heartbeatValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xCE1B1B));
-  // lv_label_set_text_static(heartbeatValue, "");
-  // lv_obj_align(heartbeatValue, heartbeatIcon, LV_ALIGN_OUT_RIGHT_MID, 5, 0);
 
   stepValue = lv_label_create(lv_scr_act(), nullptr);
   lv_obj_set_style_local_text_color(stepValue, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x00FFE7));
@@ -147,30 +138,10 @@ void WatchFaceCustom::Refresh() {
     }
   }
 
-  // heartbeat = heartRateController.HeartRate();
-  // heartbeatRunning = heartRateController.State() != Controllers::HeartRateController::States::Stopped;
-  // if (heartbeat.IsUpdated() || heartbeatRunning.IsUpdated()) {
-  //   if (heartbeatRunning.Get()) {
-  //     lv_obj_set_style_local_text_color(heartbeatIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0xCE1B1B));
-  //     lv_label_set_text_fmt(heartbeatValue, "%d", heartbeat.Get());
-  //   } else {
-  //     lv_obj_set_style_local_text_color(heartbeatIcon, LV_LABEL_PART_MAIN, LV_STATE_DEFAULT, lv_color_hex(0x1B1B1B));
-  //     lv_label_set_text_static(heartbeatValue, "");
-  //   }
-
-  //   lv_obj_realign(heartbeatIcon);
-  //   lv_obj_realign(heartbeatValue);
-  // }
-
-  // stepCount = motionController.NbSteps();
-  // if (stepCount.IsUpdated()) {
-  //   lv_label_set_text_fmt(stepValue, "%lu", stepCount.Get());
-  //   lv_obj_realign(stepValue);
-  //   lv_obj_realign(stepIcon);
-  // }
+  // set the weather symbol and temperature value
   if (weatherService.GetCurrentTemperature()->timestamp != 0 && weatherService.GetCurrentClouds()->timestamp != 0 &&
       weatherService.GetCurrentPrecipitation()->timestamp != 0) {
-    nowTemp = (weatherService.GetCurrentTemperature()->temperature / 100);
+    nowTemp = ((weatherService.GetCurrentTemperature()->temperature / 100) * (9/5)) + 32;
     clouds = (weatherService.GetCurrentClouds()->amount);
     precip = (weatherService.GetCurrentPrecipitation()->amount);
     if (nowTemp.IsUpdated()) {
