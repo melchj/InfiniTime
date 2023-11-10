@@ -141,7 +141,7 @@ void WatchFaceCustom::Refresh() {
   // set the weather symbol and temperature value
   if (weatherService.GetCurrentTemperature()->timestamp != 0 && weatherService.GetCurrentClouds()->timestamp != 0 &&
       weatherService.GetCurrentPrecipitation()->timestamp != 0) {
-    nowTemp = ((weatherService.GetCurrentTemperature()->temperature / 100) * (9/5)) + 32;
+    nowTemp = ((weatherService.GetCurrentTemperature()->temperature / 100) * 1.8) + 32;
     clouds = (weatherService.GetCurrentClouds()->amount);
     precip = (weatherService.GetCurrentPrecipitation()->amount);
     if (nowTemp.IsUpdated()) {
